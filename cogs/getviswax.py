@@ -39,7 +39,7 @@ class getviswax(commands.Cog):
             self.todays_combo = [None, None, None]
             return self.todays_combo
 
-        title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2]
+        title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2] + '\n'
         combo = ''
 
         s = self.get_combo_from_post(requests_response_text)
