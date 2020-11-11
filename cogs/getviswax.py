@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 
-class Get_vis_wax(commands.Cog):
+class getviswax(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.todays_combo = [None, None, None]
@@ -54,8 +54,8 @@ class Get_vis_wax(commands.Cog):
                 combo += '\n'
 
         combo += '\nSlot 3:\n- Is random!'
-        self.todays_combo = combo
-        return [int(d[1]), title, combo]
+        self.todays_combo = [int(d[1]), title, combo]
+        return self.todays_combo
 
     @commands.command()
     async def wax(self, ctx):
@@ -69,4 +69,4 @@ class Get_vis_wax(commands.Cog):
         await ctx.send(embed=e)
 
 def setup(bot):
-    bot.add_cog(Get_vis_wax(bot)))
+    bot.add_cog(getviswax(bot))
