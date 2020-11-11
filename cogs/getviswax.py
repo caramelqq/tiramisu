@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 class getviswax(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.todays_combo = [None, None, None]
+        self.todays_combo = [None, None, None, None, None]
 
     def get_forum_post(self):
         try:
@@ -36,35 +36,36 @@ class getviswax(commands.Cog):
         # Check date - if post is outdated (date doesn't equal today), invalidate current combo and return nothing
         d = self.get_date_from_post(requests_response_text)[0]
         if int(d[1]) != datetime.datetime.now().day:
-            self.todays_combo = [None, None, None]
+            self.todays_combo = [None, None, None, None, None]
             return self.todays_combo
 
         title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2]
-        combo = ''
+        slot_1 = ''
+        slot_2 = ''
 
         s = self.get_combo_from_post(requests_response_text)
         
         for i in range(len(s) - 1):
             if i == 0:
-                combo += '\nSlot 1:\n'
-                combo += s[i]
-                combo += '\n\nSlot 2:\n'
+                slot_1 += s[i]
             if i >= 1:
-                combo += s[i]
-                combo += '\n'
+                slot_2 += s[i]
+                slot_2 += '\n'
 
-        combo += '\nSlot 3:\n- Is random!'
-        self.todays_combo = [int(d[1]), title, combo]
+        self.todays_combo = [int(d[1]), title, slot_1, slot_2]
         return self.todays_combo
 
     @commands.command()
     async def wax(self, ctx):
-        day, title, combo = self.post_vis_wax_combo()
+        day, title, slot_1, slot_2 = self.post_vis_wax_combo()
         e = discord.Embed(type='rich', title='Vis Wax', color=int('e6ffff', 16))
         if not day or not title or not combo:
             e.add_field(name='Combination not out yet')
         else:
-            e.add_field(name=title, value=combo)
+            e.add_field(name=title)
+            e.add_field(name='Slot 1:', value=slot_1)
+            e.add_field(name='Slot 2:', value=slot_2)
+            e.add_field(name='Slot 3:', value='- Is random!')
 
         await ctx.send(embed=e)
 
