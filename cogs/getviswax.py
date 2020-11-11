@@ -10,31 +10,31 @@ class getviswax(commands.Cog):
         self.bot = bot
         self.todays_combo = [None, None, None]
 
-    def get_forum_post():
+    def get_forum_post(self):
         try:
             r = requests.get('https://secure.runescape.com/m=forum/sl=0/forums?75,76,331,66006366')
             return r.content
         except:
             return None
 
-    def get_combo_from_post(requests_text):
+    def get_combo_from_post(self, requests_text):
         soup = BeautifulSoup(requests_text, 'html.parser')
         quoted_posts = str(soup.find_all(class_='quote')[0])
         return re.findall(r'>(-\s*[^<]*)', quoted_posts)
         
-    def get_date_from_post(requests_text):
+    def get_date_from_post(self, requests_text):
         soup = BeautifulSoup(requests_text, 'html.parser')
         quoted_posts = str(soup.find_all(class_='quote')[0])
         return re.findall(r'Combination\sfor\s(\w*)\sthe\s(\d*)(\w*)', quoted_posts)
 
-    def post_vis_wax_combo():
+    def post_vis_wax_combo(self):
         # Check if we already have the result
         if all(self.todays_combo) and self.todays_combo[0] == datetime.datetime.now().day:
             return self.todays_combo
 
-        requests_response_text = get_forum_post()
+        requests_response_text = self.get_forum_post()
         # Check date - if post is outdated (date doesn't equal today), invalidate current combo and return nothing
-        d = get_date_from_post(requests_response_text)[0]
+        d = self.get_date_from_post(requests_response_text)[0]
         if int(d[1]) != datetime.datetime.now().day:
             self.todays_combo = [None, None, None]
             return self.todays_combo
@@ -42,7 +42,7 @@ class getviswax(commands.Cog):
         title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2]
         combo = ''
 
-        s = get_combo_from_post(requests_response_text)
+        s = self.get_combo_from_post(requests_response_text)
         
         for i in range(len(s) - 1):
             if i == 0:
@@ -59,7 +59,7 @@ class getviswax(commands.Cog):
 
     @commands.command()
     async def wax(self, ctx):
-        day, title, combo = post_vis_wax_combo()
+        day, title, combo = self.post_vis_wax_combo()
         e = discord.Embed(type='rich', title='Vis Wax', color=int('e6ffff', 16))
         if not day or not title or not combo:
             e.add_field(name='Combination not out yet')
