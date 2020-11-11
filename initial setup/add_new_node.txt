@@ -1,0 +1,51 @@
+Adding a new node:
+
+Cassandra.yaml:
+	Same cluster name
+	Same seed nodes
+	Correct listening address
+	Correct rpc address
+
+Cassandra.yaml memory settings:
+ :cassandra => {'cluster_name' => 'VerifyCluster',
+                          'package_name' => 'dsc20',
+                          'version' => '2.0.11',
+                          'release' => '1',
+                          'setup_jna' => false,
+                          'max_heap_size' => '512M',
+                          'heap_new_size' => '100M',
+                          'initial_token' => server['initial_token'],
+                          'seeds' => "192.168.33.10",
+                          'listen_address' => server['ip'],
+                          'broadcast_address' => server['ip'],
+                          'rpc_address' => server['ip'],
+                          'conconcurrent_reads' => "2",
+                          'concurrent_writes' => "2",
+                          'memtable_flush_queue_size' => "2",
+                          'compaction_throughput_mb_per_sec' => "8",
+                          'key_cache_size_in_mb' => "4",
+                          'key_cache_save_period' => "0",
+                          'native_transport_min_threads' => "2",
+                          'native_transport_max_threads' => "4",
+                          'notify_restart' => true,
+                          'reporter' => {
+                            'riemann' => {
+                              'enable' => true,
+                              'host' => '192.168.33.51'
+                            },
+                            'graphite' => {
+                              'enable' => true,
+                              'host' => '192.168.33.51'
+                            }
+                          }
+                        },
+________________________________________________________
+
+cassandra-env.sh
+
+MAX_HEAP_SIZE="400M"
+HEAP_NEWSIZE="100M"
+
+_______________________________________________________
+
+nodetool repair --full <table name>
