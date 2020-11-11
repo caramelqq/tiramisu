@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 class Get_vis_wax(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.todays_combo = ''
+        self.todays_combo = [None, None, None]
 
     def get_forum_post():
         try:
@@ -28,12 +28,16 @@ class Get_vis_wax(commands.Cog):
         return re.findall(r'Combination\sfor\s(\w*)\sthe\s(\d*)(\w*)', quoted_posts)
 
     def post_vis_wax_combo():
+        # Check if we already have the result
+        if all(self.todays_combo) and self.todays_combo[0] == datetime.datetime.now().day:
+            return self.todays_combo
+
         requests_response_text = get_forum_post()
-        # Check date - if date doesn't equal today, return nothing
+        # Check date - if post is outdated (date doesn't equal today), invalidate current combo and return nothing
         d = get_date_from_post(requests_response_text)[0]
         if int(d[1]) != datetime.datetime.now().day:
-            self.todays_combo = ''
-            return None
+            self.todays_combo = [None, None, None]
+            return self.todays_combo
 
         title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2]
         combo = ''
@@ -51,13 +55,16 @@ class Get_vis_wax(commands.Cog):
 
         combo += '\nSlot 3:\n- Is random!'
         self.todays_combo = combo
-        return [title, combo]
+        return [int(d[1]), title, combo]
 
     @commands.command()
     async def wax(self, ctx):
-        title, combo = post_vis_wax_combo()
+        day, title, combo = post_vis_wax_combo()
         e = discord.Embed(type='rich', title='Vis Wax', color=int('e6ffff', 16))
-        e.add_field(name=title, values=combo)
+        if not day or not title or not combo:
+            e.add_field(name='Combination not out yet')
+        else:
+            e.add_field(name=title, values=combo)
 
         await ctx.send(embed=e)
 
