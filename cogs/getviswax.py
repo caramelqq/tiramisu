@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 class getviswax(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.todays_combo = [None, None, None, None, None]
+        self.todays_combo = [None, None, None, None]
 
     def get_forum_post(self):
         try:
@@ -36,7 +36,7 @@ class getviswax(commands.Cog):
         # Check date - if post is outdated (date doesn't equal today), invalidate current combo and return nothing
         d = self.get_date_from_post(requests_response_text)[0]
         if int(d[1]) != datetime.datetime.now().day:
-            self.todays_combo = [None, None, None, None, None]
+            self.todays_combo = [None, None, None, None]
             return self.todays_combo
 
         title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2]
