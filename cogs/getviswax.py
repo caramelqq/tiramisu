@@ -58,11 +58,10 @@ class getviswax(commands.Cog):
     @commands.command()
     async def wax(self, ctx):
         day, title, slot_1, slot_2 = self.post_vis_wax_combo()
-        e = discord.Embed(type='rich', title='Vis Wax', color=int('e6ffff', 16))
+        e = discord.Embed(type='rich', title='Vis Wax '+title, color=int('e6ffff', 16))
         if not day or not title or not slot_1 or not slot_2:
             e.add_field(name='Combination not out yet')
         else:
-            e.add_field(name=title)
             e.add_field(name='Slot 1:', value=slot_1)
             e.add_field(name='Slot 2:', value=slot_2)
             e.add_field(name='Slot 3:', value='- Is random!')
