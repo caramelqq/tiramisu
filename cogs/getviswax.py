@@ -39,14 +39,14 @@ class getviswax(commands.Cog):
             self.todays_combo = [None, None, None]
             return self.todays_combo
 
-        title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2] + '\n'
+        title = 'Combination for ' + d[0] + ' the ' + d[1] + d[2]
         combo = ''
 
         s = self.get_combo_from_post(requests_response_text)
         
         for i in range(len(s) - 1):
             if i == 0:
-                combo += 'Slot 1:\n'
+                combo += '\nSlot 1:\n'
                 combo += s[i]
                 combo += '\n\nSlot 2:\n'
             if i >= 1:
