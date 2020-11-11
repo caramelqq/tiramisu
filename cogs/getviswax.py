@@ -62,9 +62,9 @@ class getviswax(commands.Cog):
         if not day or not title or not slot_1 or not slot_2:
             e.add_field(name='Combination not out yet')
         else:
-            e.add_field(name='Slot 1:', value=slot_1)
-            e.add_field(name='Slot 2:', value=slot_2)
-            e.add_field(name='Slot 3:', value='- Is random!')
+            e.add_field(name='Slot 1:', value=slot_1, inline=False)
+            e.add_field(name='Slot 2:', value=slot_2, inline=False)
+            e.add_field(name='Slot 3:', value='- Is random!', inline=False)
 
         await ctx.send(embed=e)
 
