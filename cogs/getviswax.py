@@ -64,7 +64,7 @@ class getviswax(commands.Cog):
         if not day or not title or not combo:
             e.add_field(name='Combination not out yet')
         else:
-            e.add_field(name=title, values=combo)
+            e.add_field(name=title, value=combo)
 
         await ctx.send(embed=e)
 
