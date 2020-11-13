@@ -56,7 +56,7 @@ class getviswax(commands.Cog):
         return self.todays_combo
 
     @commands.command()
-    async def wax(self, ctx):
+    async def vis(self, ctx):
         day, title, slot_1, slot_2 = self.post_vis_wax_combo()
         e = discord.Embed(type='rich', title='Vis Wax '+title, color=int('e6ffff', 16))
         if not day or not title or not slot_1 or not slot_2:
