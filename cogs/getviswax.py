@@ -12,7 +12,19 @@ class getviswax(commands.Cog):
 
     def get_forum_post(self):
         try:
-            r = requests.get('https://secure.runescape.com/m=forum/sl=0/forums?75,76,331,66006366')
+
+            headers = {
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'Sec-Fetch-Site': 'none',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Dest': 'document',
+                'Accept-Encoding': 'gzip, deflate'
+            }
+            base_url = 'https://secure.runescape.com/m=forum/sl=0/forums?75,76,331,66006366'
+            r = requests.get(base_url, headers=headers)
             return r.content
         except:
             return None
