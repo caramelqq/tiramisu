@@ -55,7 +55,7 @@ class getviswax(commands.Cog):
             requests_response_text = self.get_forum_post()
             # Check date - if post is outdated (date doesn't equal today), invalidate current combo and return nothing
             d = self.get_date_from_post(requests_response_text)[0]
-            if int(d[1]) != datetime.datetime.now().day:
+            if int(d[1]) != datetime.datetime.now(datetime.timezone.utc).day:
                 self.todays_combo = [None, None, None, None]
                 return self.todays_combo
 
