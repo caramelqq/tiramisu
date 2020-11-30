@@ -10,7 +10,7 @@ class getviswax(commands.Cog):
         self.bot = bot
         self.todays_combo = [None, None, None, None]
 
-    def get_forum_post(self):
+    def get_forum_posts(self):
         try:
 
             headers = {
@@ -32,7 +32,7 @@ class getviswax(commands.Cog):
     def get_combo_from_post(self, requests_text):
         soup = BeautifulSoup(requests_text, 'html.parser')
         try:
-            quoted_posts = str(soup.find_all(class_='quote')[0])
+            quoted_posts = str(soup.find_all(class_='forum-post__body')[0])
             return re.findall(r'>(-\s*[^<]*)', quoted_posts)
         except:
             return None
@@ -41,7 +41,7 @@ class getviswax(commands.Cog):
     def get_date_from_post(self, requests_text):
         soup = BeautifulSoup(requests_text, 'html.parser')
         try:
-            quoted_posts = str(soup.find_all(class_='quote')[0])
+            quoted_posts = str(soup.find_all(class_='forum-post__body')[0])
             return re.findall(r'Combination\sfor\s(\w*)\sthe\s(\d*)(\w*)', quoted_posts)
         except:
             return None
@@ -49,10 +49,10 @@ class getviswax(commands.Cog):
     def post_vis_wax_combo(self):
         try:
             # Check if we already have the result
-            if all(self.todays_combo) and self.todays_combo[0] == datetime.datetime.now().day:
+            if all(self.todays_combo) and self.todays_combo[0] == datetime.datetime.now(datetime.timezone.utc).day:
                 return self.todays_combo
 
-            requests_response_text = self.get_forum_post()
+            requests_response_text = self.get_forum_posts()
             # Check date - if post is outdated (date doesn't equal today), invalidate current combo and return nothing
             d = self.get_date_from_post(requests_response_text)[0]
             if int(d[1]) != datetime.datetime.now(datetime.timezone.utc).day:
@@ -72,6 +72,10 @@ class getviswax(commands.Cog):
                     slot_2 += s[i]
                     slot_2 += '\n'
 
+            # Escape the '*' character
+            slot1.replace(('*', '\*'))
+            slot2.replace(('*', '\*'))
+
             self.todays_combo = [int(d[1]), title, slot_1, slot_2]
             return self.todays_combo
         except:
@@ -84,6 +88,7 @@ class getviswax(commands.Cog):
         e = discord.Embed(type='rich', color=int('e6ffff', 16))
         if not day or not title or not slot_1 or not slot_2:
             e.title = 'Combination not out yet'
+            e.add_field(name='Vis Wax FC', value='https://secure.runescape.com/m=forum/sl=0/forums?75,76,331,66006366')
         else:
             e.title = 'Vis Wax ' + title
             e.add_field(name='Slot 1:', value=slot_1, inline=False)
