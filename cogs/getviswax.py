@@ -73,8 +73,8 @@ class getviswax(commands.Cog):
                     slot_2 += '\n'
 
             # Escape the '*' character
-            slot1.replace(('*', '\*'))
-            slot2.replace(('*', '\*'))
+            slot_1 = slot_1.replace('*', '\*')
+            slot_2 = slot_2.replace('*', '\*')
 
             self.todays_combo = [int(d[1]), title, slot_1, slot_2]
             return self.todays_combo
